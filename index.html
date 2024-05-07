@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+
+/* Import de la fuente para toda la pagina */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
+/* Reseteo inicial */
+* {
+  text-decoration: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat' !important;
+  /* Sacar esa sombra celeste que aparece al presionar algun componente interactuable */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+}
+
+/* Para toda la pagina y todas las queries */
+body {
+  overflow: auto !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 93vh;
+  margin: 0;
+}
+
+
+/*Color celeste ultra claro para el fondo de todas las vistas
+  background-color: #f0f5ff;
+*/
+
+/* LOGO */
+.logo {
+  width: 8em !important;
+}
+
+/*Scroll bar*/
+::-webkit-scrollbar {
+  width: 0.4em;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 1em;
+}
+
+/* Textos para toda la pagina */
+h1,
+h2,
+p {
+  text-align: center !important;
+}
+
+h1 {
+  font-size: 1.6em;
+}
+
+h2 {
+  font-size: 1.2em;
+}
+
+p,
+a {
+  font-size: 1em;
+}
+
+/* Enlaces: */
+a {
+  color: #000000;
+  font-weight: 600;
+}
+
+a:hover {
+  color: #009FF5;
+}
+
+/* ALL SVGs */
+svg {
+  cursor: pointer;
+}
+
+/* Estilo para todos los botones con texto */
+.botonText {
+  font-size: 1em;
+  color: #ffffff;
+  text-align: center;
+  background-color: #009FF5;
+  ;
+  width: auto;
+  padding: 0.7em 0.6em;
+  cursor: pointer;
+  border-radius: 0.5em;
+  border: 0.15em solid #009FF5;
+  border-bottom: 0.15em solid #018dd8;
+}
+
+/* Spin de carga */
+#loader {
+  border: 3px solid white;
+  border-top: 4px solid transparent;
+  border-radius: 100%;
+  width: 1em;
+  height: 1em;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* COLOR CELESTE PARA TODO EL SITIO #009FF5    */
+
+
+/*QUITAR LAS FLECHITAS DE AUMENTAR O RESTAR A LOS IMPUT NUMBER*/
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Estilos de los inputs */
+.input__wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input__field {
+  color: #000000;
+  font-size: 1em;
+  border: 1px solid rgba(255, 255, 255, 0.034);
+  background-color: #f3f3f3;
+  width: 100%;
+  padding: 0.7em 0.6em;
+  border-bottom: 1px solid #d2d2d268;
+  border-radius: 0.5em;
+  text-align: center;
+}
+
+.input__field:not(:placeholder-shown) {
+  border: 1px solid #d8d8d8 !important;
+}
+
+.input__label {
+  position: absolute;
+  top: 0.375rem;
+  left: 0.5rem;
+  padding: 0 0.5em;
+  transition: 0.3s;
+  pointer-events: none;
+  display: none;
+}
+
+.input__field:focus {
+  outline-color: #009FF5 !important;
+}
+
+.input__field:focus+.input__label,
+.input__field:not(:placeholder-shown)+.input__label {
+  display: block;
+  font-size: 0.9em;
+  top: -0.5rem;
+  color: #009FF5;
+  border-radius: 3em;
+  background-color: #f3f3f3;
+}
+
+
+/* Sweet Alert*/
+/* Bordes redondeados y border-bottom lineramente mas gris*/
+.swal2-popup.swal2-modal.swal2-icon-success.swal2-show,
+.swal2-popup.swal2-modal.swal2-icon-error.swal2-show,
+.swal2-popup.swal2-modal.swal2-icon-info.swal2-show,
+.swal2-popup.swal2-modal.swal2-icon-warning.swal2-show,
+.swal2-container.swal2-center>.swal2-popup,
+.swal2-popup.swal2-toast {
+  border-radius: 1.5em !important;
+  border-bottom: 0.1em solid rgba(174, 173, 173, 0.78) !important;
+}
+
+/* Margen hacia arriba en todos los iconos de las alerts */
+.swal2-icon {
+  margin: 1.7em auto .6em;
+}
+
+/* Tamaño para el title de los alerts (El Toast tiene su size aparte, no es este). */
+h2#swal2-title {
+  font-size: 1.3em !important;
+  color: black;
+}
+
+/* Este es el tamaño de la fuente que este debajo de los title de los alerts. */
+div:where(.swal2-container) .swal2-html-container {
+  font-size: 1em !important;
+}
+
+/* Tamaño para el texto del toast */
+.swal2-popup.swal2-toast {
+  font-size: 0.65em !important;
+}
+
+/* Entiendo que agrega un scroll en caso de que el contenido no entre del todo en el alert*/
+.swal2-container.swal2-center.swal2-backdrop-show {
+  overflow-y: auto;
+}
+
+/* Para que no se rompa el contenedor del toast, uno cuando aparece, el otro al desaparecer */
+.swal2-container.swal2-top-end.swal2-backdrop-show,
+.swal2-container.swal2-top-end.swal2-backdrop-hide {
+  width: auto !important;
+}
+
+/* Esto es basicamente para estar seguros de que el body del alert (El contendor principal) no tenga ningun padding raro y que este bien centrado */
+body.swal2-shown.swal2-height-auto {
+  padding-right: 0 !important;
+}
+
+.swal2-timer-progress-bar {
+  background-color: #1298EA;
+}
+
+/* Border radius para los botones */
+button.swal2-confirm.swal2-styled,
+button.swal2-cancel.swal2-styled {
+  border-radius: 1em;
+}
+
+/* Con esto le sacamos una sombra tipo neomorfismo que tienen los botones al activarse el hover, como profundidad: */
+div:where(.swal2-actions):not(.swal2-loading) .swal2-styled:hover {
+  background-image: none !important;
+}
+
+/* Esto es para sacarle ese focus asqueroso que aparece por defecto en los botones al cargarse el Sweet alert: */
+.swal2-confirm:not([disabled]) {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.swal2-cancel:not([disable]) {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Estas son las transiciones para cuando un alert aparacece y otra para cuando desaparece: */
+@keyframes custom-swal2-show {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes custom-swal2-hide {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+}
+
+.custom-swal2-show {
+  animation-name: custom-swal2-show;
+  animation-duration: 0.2s;
+}
+
+.custom-swal2-hide {
+  animation-name: custom-swal2-hide;
+  animation-duration: 0.2s;
+}
+
+/* Botón X de cerrrar pestaña */
+button.swal2-close {
+  box-shadow: none !important;
+  color: black !important;
+  border-top-right-radius: 0.5em;
+  background: rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: 0.5em;
+  border-top-left-radius: 0em;
+  border-bottom-right-radius: 0em;
+}
+
+div:where(.swal2-container) button:where(.swal2-close):hover {
+  color: #E23237 !important;
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Gap entre Cancelar y Confirmar */
+.swal2-actions {
+  gap: 2em;
+}
+
+        .return {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    padding: 4%;
+    border-bottom: 1px solid #f3f3f3;
+}
+
+a:hover {
+    color: black;
+}
+
+h2 {
+    font-weight: 400
+}
+
+.AccountContainer {
+    /* Configuración del display flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    /* Medidas y posicion del contenedor*/
+    width: 100%;
+    height: auto;
+}
+
+.sectionAccount {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 4%;
+    background: #f3f3f3;
+}
+
+.sectionDetails {
+    width: 100%;
+    background: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4%;
+    border-bottom: 2px solid #f3f3f3;
+    position: relative;
+}
+
+.pDetails {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.4em;
+}
+
+/* Efecto de carga */
+.loadingBox {
+    width: 100%;
+    height: 1.21em;
+    background-color: #f3f3f3;
+    background: #eee;
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+    to {
+        background-position-x: -200%;
+    }
+}
+
+/* Div para el correo y el name */
+.actualData {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4%;
+    gap: 0.4em;
+    border-radius: 0.5em;
+    border: 2px solid #f3f3f3;
+}
+
+.pSecundary {
+    color: gray;
+    font-size: 0.9em;
+}
+
+
+/* EDITAR NOMBRE CONTAINER: */
+.editName-Content {
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    height: auto;
+}
+
+#changeNameForm {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+    height: auto;
+    border-bottom: 2px solid #f3f3f3;
+    padding: 5% 4%;
+}
+
+.botonText {
+    width: 10em !important;
+}
+
+
+
+/* LOADER CON UNA PUNTA FINA 
+#loader {
+    border: 3px solid #009FF5;
+    border-top: 4px solid transparent;
+    border-right: 1px;
+    width: 2em;
+    height: 2em;
+}
+*/
+    </style>
+</head>
+<body>
+    
+    <div class="return">
+        <a href="/publications" style="height: 30px;">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                width="30" height="30" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m15 19-7-7 7-7" />
+            </svg>
+        </a>
+        <h1>Panel de usuario</h1>
+        <div></div>
+    </div>
+    
+    <div class="AccountContainer">
+    
+        <!-- CUENTA-->
+    
+        <div class="sectionAccount">
+            <h2>Configuración de cuenta</h2>
+        </div>
+    
+        <!-- DATOS ACTUALES -->
+    
+        <div class="sectionDetails">
+            <div class="actualData" id="loadingSkeleton">
+                <div class="loadingBox"></div>
+                <div class="loadingBox"></div>
+            </div>
+            <div class="actualData" id="dataAccount" style="display: none;">
+                <p style="font-weight:bolder;" id="name"></p>
+                <p id="email"></p>
+            </div>
+        </div>
+    
+        <!-- CAMBIAR NOMBRE DE USUARIO -->
+    
+        <div class="sectionDetails">
+            <div class="pDetails">
+                <p style="font-weight:bolder;">Nombre</p>
+                <p class="pSecundary">Cambiar nombre de usuario</p>
+            </div>
+            <svg id="showEditName" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m19 9-7 7-7-7" />
+            </svg>
+        </div>
+    
+        <div id="editNameContent" class="editName-Content">
+            <form id="changeNameForm">
+                <div class="input__wrapper">
+                    <input type="text" name="first_name" id="first_name" class="input__field" placeholder="Nuevo nombre"
+                        required>
+                    <label for="first_name" class="input__label">Nuevo nombre</label>
+                </div>
+    
+                <input id="changebtn1" style="display: block;" class="botonText" type="submit" value="Actualizar">
+    
+                <div id="changebtn2" class="botonText" style="display: none;">
+                    <div style="display: flex; align-items: center; justify-content:center; height: 19.340px !important;">
+                        <div id="loader"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    
+        <!-- EDITAR CORREO --->
+        <div class="sectionDetails">
+            <div class="pDetails">
+                <p style="font-weight:bolder;">Correo</p>
+                <p class="pSecundary">Restablecer correo</p>
+            </div>
+            <a href="/resetEmail1" style="height: 30px;">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m9 5 7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    
+        <div class="sectionDetails">
+            <div class="pDetails">
+                <p style="font-weight:bolder;">Contraseña</p>
+                <p class="pSecundary">Restablecer contaseña</p>
+            </div>
+            <a href="/resetPass01" style="height: 30px;">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m9 5 7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    
+        <!-- SELLER -->
+    
+        <div class="sectionAccount">
+            <h2>Perfil Seller</h2>
+        </div>
+    
+        <div class="sectionDetails">
+            <div class="pDetails" style="gap: 1em;">
+                <p style="font-weight:bolder; text-align: left !important;">¿Aún no tienes un Perfil Seller?
+                </p>
+                <p style="font-weight:bolder; color:#009FF5;">¿Qué es un Perfil Seller?</p>
+    
+                <p class="pSecundary" style="text-align: left !important;">
+                    Local Market es mucho más que un eCommerce, somos un Social Commerce.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">Por ende, un Perfil Seller es más que un simple
+                    perfil de
+                    usuario.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">La diferencia radica en una
+                    visión más amplia, que va más allá de simplemente cerrar ventas o contrataciones, un Social Commerce
+                    apunta a establecer una red de clientes ideales en un entorno práctico y dinámico, similar a las redes
+                    sociales pero diseñado específicamente para impulsar el crecimiento de tu marca y tu éxito como
+                    emprendedor.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    El Perfil Seller no solo te permite compartir tus productos o servicios en la plataforma, sino que
+                    también te brinda la oportunidad de crear una presentación impactante que resalte lo mejor de tu marca,
+                    impulsando tu negocio al próximo nivel.
+                </p>
+    
+                <p style="font-weight:bolder; color:#009FF5;">¿Qué contiene el Perfil Seller?</p>
+    
+                <p class="pSecundary" style="text-align: left !important;">
+                    El Perfil Seller consta de:
+                </p>
+    
+                <p class="pSecundary" style="text-align: left !important;">
+                    <b>- Nombre Comercial:</b> Este será el nombre con el que los usuarios te conoceran en la plataforma.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    <b>- Foto de Fondo:</b> Una imagen de fondo donde podras poner una foto atractiva de tu negocio, marca o
+                    productos.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    <b>- Foto de Perfil:</b> Una imagen que represente tu marca de manera más personal, como un logo, icono
+                    o
+                    cualquier imagen que elijas como identificador.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    <b>- Presentación:</b> Un espacio para presentar tu negocio, describir tus productos o servicios, etc.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    <b>- Página Web:</b> Si tienes una página web propia, podras incluir el enlace directamente en tu perfil
+                    para
+                    que los clientes puedan visitarla y obtener más información.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    <b>- Número de Celular:</b> Este debe ser un número de WhatsApp y es esencial, ya que se utiliza para
+                    generar un botón "Contactar" en totas tus publicaciones.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    <b>- Ubicación:</b> Actualmente nuestro servicio solo esta disponible para Posadas, por lo tanto,
+                    necesitaremos
+                    validar tu ubicación. Tu ubicación no se guardara en la base de datos, ni sera compartida en tu perfil,
+                    solo sera requerida única y exclusivamente al momento de crear tu perfil.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    <b>- Dirección:</b> Si tienes una tienda física, puedes proporcionar la dirección para que los clientes
+                    puedan encontrarte fácilmente.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    <b>- Publicaciones:</b> Todas las publicaciones que realices apareceran agrupadas en tu perfil.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    <b>- Número de Seguidores:</b> Puesto que ofrecemos un sistema de suscripción para los usuarios, tu
+                    perfil
+                    tendra un indicador de los usuarios que han decidido seguir tu perfil en la plataforma, lo que reflejara
+                    el
+                    interés y la popularidad de tu negocio entre los clientes.
+                </p>
+    
+                <p style="font-weight:bolder; color:#009FF5;">¿Crear un Perfil Seller es gratis?</p>
+    
+                <p class="pSecundary" style="text-align: left !important;">
+                    ¡Crear un Perfil Seller es completamente gratuito!</p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    Sin embargo, es importante tener en cuenta que las
+                    publicaciones en nuestra plataforma tienen un costo asociado.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    El costo de las publicaciones se calcula por día y no está basado en el precio individual de cada
+                    publicación.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    En su lugar, se aplica una tarifa común a todas las publicaciones.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    Este costo puede variar
+                    y siempre podrás encontrar el precio actualizado al principio de la ventana "Crear publicación".
+                </p>
+    
+                <p class="pSecundary" style="text-align: left !important;">
+                    Una vez que seleccionas la cantidad de días para tu publicación, máximo 30 días, podrás
+                    conocer el costo final.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    Si decides pagar, tu publicación estará activa durante el periodo seleccionado.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    Al finalizar este periodo, la publicación no se renovará automáticamente, pero estará disponible durante
+                    dos días más de forma no visible para otros usuarios.
+                </p>
+                <p class="pSecundary" style="text-align: left !important;">
+                    Si deseas renovarla, deberás hacerlo manualmente.
+                </p>
+                
+                <p class="pSecundary" style="text-align: left !important;">
+                    Después de este periodo, la publicación se eliminará automáticamente.
+                </p>
+    
+                <p class="pSecundary" style="text-align: left !important;">
+                    Esperamos que esta información sea clara y te ayude a comprender mejor el proceso de publicación y los
+                    costos asociados en nuestra plataforma.
+                </p>
+    
+            </div>
+    
+        </div>
+        <!-- 
+            - AUN NO TIENES UN PERFIL SELLER
+            CREAR PERFIL SELLER.
+    
+            - VER PERFIL SELLER.
+    
+            - ENLACE URL A TU PERFIL, PARA COMPARTIR. 
+            - ENLACE QR A TU PERFIL, PARA COMPARTIR. 
+    
+            - EDITAR PERFIL SELLER.
+            - ELIMINAR PERFIL SELLER.
+        -->
+    
+    
+        <div class="sectionDetails">
+            <div class="pDetails">
+                <p style="font-weight:bolder;">Contraseña</p>
+                <p class="pSecundary">Restablecer contaseña</p>
+            </div>
+            <a href="/resetPass01" style="height: 30px;">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m9 5 7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <!-- GESTIÓN DE CUENTA-->
+    
+        <div class="sectionAccount">
+            <h2>Gestión de cuenta</h2>
+        </div>
+    
+        <div class="sectionDetails">
+            <div class="pDetails">
+                <p style="font-weight:bolder;">Cerrar sesión</p>
+            </div>
+            <svg id="logout" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2" />
+            </svg>
+        </div>
+    
+        <div class="sectionDetails">
+            <div class="pDetails">
+                <p style="font-weight:bolder; color: rgb(184, 7, 7);">Eliminar cuenta</p>
+            </div>
+            <svg id="deleteAccount" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="rgb(184, 7, 7)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+            </svg>
+    
+        </div>
+    
+    </div>
+    
+</body>
+</html>
